@@ -1,0 +1,15 @@
+{
+
+	"key":[
+		[17,17,5],
+		[21,18,21],
+		[2,2,19]
+	],
+
+	"defaultEncFile":"cipher.txt",
+
+	"defaultDecFile":"plan.txt",
+
+	"mod":127
+
+}
