@@ -1,24 +1,12 @@
 import codecs
-import sys
-import json
-# #NEW IDEA : creating list contains hole plan text in same size of key rows i.e:[ [],[],[] ]
-
-
-#global variables
-
-data = json.load(open('/home/geek/myCodes/py/hill_cipher/data.json'))
-
-key = data['key']
-defaultEncFile = data['defaultEncFile']
-mod = data['mod']
 
 ###################
 #functions section
 
-def write2file(path,cipher):
-	file = open(path,'w')
-	file.write(''.join(map(str,cipher)))
-	file.close()
+def write2file(target,cipher):
+	with open(target,'w',encoding='utf-8') as file:
+		file.write(''.join(map(str,cipher)))
+	
 
 
 def file2list(file):
@@ -47,10 +35,9 @@ def E(key,plan):
 				
 		for column in range(k_demention):
 			echar = 0
-
 			for row in range(k_demention):
-				echar += (ord(vlist[row])*key[row][column])%mod
-
+				echar += (ord(vlist[row])*(key[row][column]))%mod
+			
 			cipherText.append(repr(chr(echar)).replace("'",''))
 
 
@@ -77,7 +64,7 @@ if len(argvlist) >= 2:
 					pathTo = argvlist[i+2]
 			except (IndexError,FileNotFoundError):
 				print("destination file not specified ,writing Result to default file [{}]".format(defaultEncFile))
-				pathTo = defaultEncFile
+				pathTo = fullpath(defaultEncFile)
 			typeInput = True
 			break
 
@@ -94,7 +81,7 @@ if len(argvlist) >= 2:
 					pathTo = argvlist[i+3]
 			except (IndexError,FileNotFoundError):
 				print("destination file not specified ,writing Result to default file [{}]".format(defaultEncFile))
-				pathTo = defaultEncFile
+				pathTo = fullpath(defaultEncFile)
 			
 			typeFile = True
 			break
@@ -107,6 +94,7 @@ if len(argvlist) >= 2:
 ########################
 # execution Section
 
+
 if typeFile:
 
 	try:
@@ -116,6 +104,7 @@ if typeFile:
 elif typeInput:
 
 	try:
+		print(pathTo)
 		write2file(pathTo,E(key,text))
 	except TypeError:
 		print('the file specified is encrypted indeed !')

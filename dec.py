@@ -1,11 +1,17 @@
 import numpy as np
 import codecs
 import sys
+import os
 import json
 from ast import literal_eval as le
 
+def fullpath(file):
+	path = os.path.join(os.getcwd(),file)
+	return path
+
 #global variables Section
-data = json.load(open('data.json'))
+
+data = json.load(open(fullpath('data.json')))
 matrix = data['key']
 defaultDecFile = data['defaultDecFile']
 mod = data['mod']
@@ -14,17 +20,15 @@ mod = data['mod']
 #####################
 #functions Section
 
-def decode(s):
-	return codecs.decode(s,'unicode_escape')
 
 def write2file(path,cipher):
-	file = open(path,'w')
+	file = open(path,'w',encoding='utf-8')
 	file.write(''.join(map(str,cipher)))
 	file.close()
 
 
 def file2list(file):
-	f = open(file)
+	f = open(file,'r',encoding='utf-8')
 	l=[]
 	result = []
 	for c in f.read():
@@ -51,7 +55,6 @@ def file2list(file):
 
 			result.append(''.join(map(str,l[cursor:cursor+4])))
 			step = 3
-
 
 		else:
 			result.append(l[cursor])
@@ -168,10 +171,7 @@ def D(key,cipher):
 			plantext.pop(cursor)
 		cursor-+i
 
-
 	return plantext
-
-
 
 
 ##########################
@@ -193,7 +193,7 @@ if len(argvlist) >= 2:
 					print("writing To File [{}]".format(pathTo))
 			except (IndexError,FileNotFoundError):
 				print("destination file not specified ,writing result to default file [{}]".format(defaultDecFile))
-				pathTo = defaultDecFile
+				pathTo =fullpath(defaultDecFile)
 			typeInput = True
 			break
 
@@ -212,7 +212,7 @@ if len(argvlist) >= 2:
 					print("write result to File [{}]".format(pathTo))
 			except (IndexError,FileNotFoundError):
 				print("destination file not specified ,writing result to default file [{}]".format(defaultDecFile))
-				pathTo = defaultDecFile
+				pathTo = fullpath(defaultDecFile)
 			
 			typeFile = True
 			break
@@ -220,6 +220,8 @@ if len(argvlist) >= 2:
 		else:
 			print("invalid argument ..")
 			sys.exit()
+
+
 
 ###################
 #Execution Section
