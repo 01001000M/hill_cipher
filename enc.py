@@ -1,4 +1,21 @@
+import sys
+import os
+import json
 import codecs
+
+
+
+def fullpath(file):
+	full = os.path.join(os.getcwd(),file)
+	return full
+
+###################
+#global vars
+
+data = json.load(open(fullpath("data.json")))
+key = data['key']
+defaultEncFile = data['defaultEncFile']
+mod = data['mod']
 
 ###################
 #functions section
